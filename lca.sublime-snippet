@@ -1,0 +1,103 @@
+<snippet>
+	<content><![CDATA[
+class Tree
+{
+public:
+    int N, LG;
+    vector<vector<int>>gr, lca;
+    vector<int>depth, parent, sz;
+    Tree( int n )
+    {
+        N = n+5;
+        LG = log(N);
+        gr.resize(N);
+        lca.resize(N, vector<int>(LG+5,0));
+        depth.resize(N,0);
+        parent.resize(N,-1);
+        sz.resize(N,1);
+    }
+    int log( int n )
+    {
+        int cnt = 0;
+        while( n )
+        {
+            cnt++;
+            n /= 2;
+        }
+        return cnt;
+    }
+    void addEdge( int u, int v )
+    {
+        gr[u].pb(v);
+        gr[v].pb(u);
+    }
+    void addEdges( vector<vector<int>>&edges )
+    {
+        for( auto edge : edges )
+        {
+            addEdge( edge[0], edge[1] );
+        }
+    }
+    void dfs( int v, int p = -1 )
+    {
+        if( p != -1 )
+        {
+            parent[v] = p;
+            lca[v][0] = p;
+            for(int j=1;j<=LG;j++)
+                lca[v][j] = lca[ lca[v][j-1] ][j-1];
+        }
+        for( auto to : gr[v] )
+        {
+            if( to != p )
+            {
+                depth[to] = depth[v] + 1;
+                dfs(to, v);
+                sz[v] += sz[to];
+            }
+        }
+    }
+    int up( int u, int h )
+    {
+        if( h <= 0 ) return u;
+        int cnt = 0;
+        while( h )
+        {
+            if( h&1 )
+                u = lca[u][cnt];
+            cnt++;
+            h >>= 1;
+        }
+        return u;
+    }
+    int find_lca( int u, int v )
+    {
+        u = up(u, depth[u]-depth[v]);
+        v = up(v, depth[v]-depth[u]);
+        for(int bit=LG;bit>=0;bit--)
+        {
+            if( lca[u][bit] != lca[v][bit] )
+            {
+                u = lca[u][bit];
+                v = lca[v][bit];
+            }
+        }
+        while( u != v )
+        {
+            u = lca[u][0];
+            v = lca[v][0];
+        }
+        return u;
+    }
+    int distance( int u, int v )
+    {
+        int ancestor = find_lca(u,v);
+        return depth[u] + depth[v] - 2*depth[ancestor];
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>_lca</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

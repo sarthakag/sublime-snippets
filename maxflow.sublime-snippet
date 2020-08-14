@@ -1,0 +1,66 @@
+<snippet>
+	<content><![CDATA[
+const int SZ=210; // no. of nodes
+vector<int> adj[SZ];
+int cap[SZ][SZ];
+class prioritize{
+  public:
+    bool operator ()(pair<int,int>& p1,pair<int,int> &p2)
+    {
+      return p1.second<p2.second;
+    }
+};
+struct maxFlow{
+  int path,result=0,source,sink,from[SZ],vis[SZ],curr,tmp;
+  int max_flow()
+  {
+    while(bfs()) 
+    {
+      path=INFINITY;
+      for(int v=sink;v!=source;v=from[v]) path=min(path,cap[from[v]][v]);
+      for(int v=sink;v!=source;v=from[v]) cap[from[v]][v]-=path,cap[v][from[v]]+=path;
+      result+=path;
+    }
+    return result; 
+  }
+  void addedge(int a,int b,int capacity)
+  {
+    adj[a].pb(b),cap[a][b]=capacity;
+    adj[b].pb(a),cap[b][a]=0;
+  }
+  bool bfs()
+  {
+    for(int i=0;i<SZ;i++) vis[i]=0;
+    priority_queue<pair<int,int> ,vector<pair<int,int> >,prioritize> q;
+    q.push({source,0}),vis[source]=1,from[source]=-1;
+    while(!q.empty()) 
+    {
+      curr=q.top().first,q.pop(),tmp=(int)(adj[curr].size());
+      for(int i=0;i<tmp;i++)
+        if(!vis[adj[curr][i]] and cap[curr][adj[curr][i]])
+        {
+          q.push({adj[curr][i],cap[curr][adj[curr][i]]}),from[adj[curr][i]]=curr,vis[adj[curr][i]]=1;
+          if(adj[curr][i]==sink) return true;
+        }
+    }
+    return false;
+  }
+};
+/*
+    maxFlow flow;
+
+    flow.source=0;
+    flow.sink=201;
+
+    flow.addedge(i,j,weight); // declares global cap[i][j]
+
+	flow.max_flow(); //changes global cap[i][j];
+
+*/
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>_maxflow</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

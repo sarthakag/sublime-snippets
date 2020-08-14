@@ -1,0 +1,21 @@
+<snippet>
+	<content><![CDATA[
+int expo(int base,int x)
+{
+    int res = 1;    
+    base = base % MOD; 
+    while (x > 0)
+    {
+        if (x & 1)
+            res = (res*base) % MOD;
+        x= x>>1;
+        base = (base*base) % MOD;  
+    }
+    return res;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>_expo</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

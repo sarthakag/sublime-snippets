@@ -1,0 +1,77 @@
+<snippet>
+	<content><![CDATA[
+struct matrix
+{
+    long long int arr[2][2];
+};
+ 
+matrix matrixMult(matrix A, matrix B)
+{
+    matrix C;
+ 
+    for(int i=0; i<2; i++)
+    {
+        for(int j=0; j<2; j++)
+        {
+            C.arr[i][j] = 0;
+ 
+            for(int k=0; k<2; k++)
+            {
+                C.arr[i][j] += A.arr[i][k]*B.arr[k][j];
+                C.arr[i][j] %= MOD;
+            }
+        }
+    }
+    return C;
+}
+matrix myPow(matrix A, long long int N)
+{
+    if(N == 1)
+        return A;
+    matrix half = myPow(A, N/2);
+    matrix ans;
+ 	ans = matrixMult(half, half);
+    if(N&1)
+        ans = matrixMult(ans, A);
+
+    return ans;
+}
+ 
+int main()
+{
+      #ifndef ONLINE_JUDGE
+      freopen("in.txt","r",stdin);
+      freopen("out.txt","w",stdout);
+    #endif
+    int t;
+    cin >> t;
+ 
+    matrix transitionMatrix;
+ 
+    transitionMatrix.arr[0][0] = 1;
+    transitionMatrix.arr[0][1] = 1;
+    transitionMatrix.arr[1][0] = 1;
+    transitionMatrix.arr[1][1] = 0;
+ 
+    while(t--)
+    {
+        long long int N;
+        cin >> N;
+ 
+        if(N == 1)
+            cout << "1" << endl;
+        else if(N == 2)
+            cout << "2" << endl;
+        else
+        {
+            matrix ans = myPow(transitionMatrix, N-2);
+            cout << (2*ans.arr[0][0] + ans.arr[0][1])%MOD << endl;
+        }
+    }
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>_met</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

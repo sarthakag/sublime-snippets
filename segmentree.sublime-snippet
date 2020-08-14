@@ -1,0 +1,51 @@
+<snippet>
+	<content><![CDATA[
+int arr[200011];
+int tree[800011];
+void build(int node,int left,int right)
+{
+    if(left==right)
+    {
+            tree[node]=arr[left];
+            return;
+    }
+
+    int mid=(left+right)/2;
+    build(2*node+1,left,mid);
+    build(2*node+2,mid+1,right);
+    tree[node]=min(tree[2*node+1],tree[2*node+2]);
+    return;
+}
+int query(int node,int left,int right,int ls,int rs)
+{
+    if(ls>right || rs<left)
+        return INFINITY;
+    if(left>=ls && right<=rs )
+        return tree[node];
+    else
+        return min(query(2*node+1,left,(left+right)/2,ls,rs),query(2*node+2,((left+right)/2)+1,right,ls,rs));
+}
+void sol()
+{
+    int n;cin>>n;
+    for(int i=0;i<n;i++)
+        cin>>arr[i];
+    build(0,0,n-1);
+    int q;cin>>q;
+    while(q--)
+    {
+        int x,y;cin>>x>>y;
+        cout<<query(0,0,n-1,x,y)<<endl;
+    }
+}
+int main()
+{
+        sol();
+
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>segtree</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

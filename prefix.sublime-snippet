@@ -1,0 +1,23 @@
+<snippet>
+	<content><![CDATA[
+int get_prefix(string str)
+{
+    int n=str.length();
+    std::vector<int> pi(n,0);
+    for(int i=1;i<n;++i)
+    {
+        int j=pi[i-1];
+        while(j>0&&str[j]!=str[i])
+            j=pi[j-1];
+        if(str[i]==str[j])
+            ++j;
+        pi[i]=j;
+    }
+    return pi.back();
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>_prefix</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

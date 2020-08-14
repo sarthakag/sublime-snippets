@@ -1,0 +1,89 @@
+<snippet>
+	<content><![CDATA[
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define fastio() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0)
+#define test() int t;cin>>t;while(t--)
+#define pb push_back
+#define nl cout<<endl
+#define MOD 1000000007
+#define loop(i,start,end) for(int i=start;i<end;i++)
+#define N 100001
+#define all(v) v.begin(),v.end()
+#define oa(a,n) for(int i=0;i<n;i++)cout<<a[i]<<" ";nl
+#define ov(a) for(int i=0;i<a.size();i++)cout<<a[i]<<" ";nl
+#define vinn(n,v) int n;cin>>n;vector<int>v(n);loop(i,0,n)cin>>v[i];
+#define vinm(n,m,v) int n,m;cin>>n>>m;vector<int>v(n);loop(i,0,n)cin>>v[i];
+#define debug(x) cerr<<#x<<" : "<<x<<endl;
+mt19937 rd(time(0)); // i = rd%n
+vector<int>v(N);
+vector<pair<int,int>>val;
+int t[20][N];
+void build(int c,int l, int r)
+{
+	if(l==r)
+		t[c][l] = val[l].second;
+	else
+	{
+		int mid = (l+r)/2;
+		build(c+1,l,mid);
+		build(c+1,mid+1,r);
+		int i = l,j = mid+1,k = l;
+		while(i<=mid && j<=r)
+		{
+			if(t[c+1][i]<=t[c+1][j])
+				t[c][k++] = t[c+1][i++];
+			else 
+				t[c][k++] = t[c+1][j++];
+		}
+		while(i<=mid)
+			t[c][k++] = t[c+1][i++];	
+		while(j<=r)
+			t[c][k++] = t[c+1][j++];
+	}
+}
+int query(int c,int l,int r,int l1,int r1,int k)
+{
+	if(l==r)return t[c][l];
+	int mid = (l+r)/2;
+	auto it = upper_bound(t[c+1]+l,t[c+1]+mid+1, r1)-lower_bound(t[c+1]+l, t[c+1]+mid+1, l1);
+	if(k<=it) return query(c+1,l,mid,l1,r1,k);
+	else return query(c+1,mid+1,r,l1,r1,k-it);
+
+}
+// kth smallest in range !!!! using merge sort tree!
+signed main() 
+{
+	fastio();
+	#ifndef ONLINE_JUDGE
+		freopen("in.txt","r",stdin);
+		freopen("out.txt","w",stdout);
+	#endif
+	int n,m;
+	cin>>n>>m;
+	loop(i,0,n)
+	{
+		cin>>v[i];
+		val.pb({v[i],i});
+	}
+	sort(all(val));
+	build(1,0,n-1);
+	while(m--)
+	{
+		int l,r,k;
+		cin>>l>>r>>k;
+		l--;r--;
+		int ans = query(1,0,n-1,l,r,k);
+		cout<<v[ans]<<endl;
+	}
+	return 0;
+}
+
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>_mst_kth_smallestInRange</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

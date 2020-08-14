@@ -1,0 +1,16 @@
+<snippet>
+	<content><![CDATA[
+struct compare 
+{
+  bool operator()(const int& l, const int& r) 
+  {
+      return l < r; //min: > ; max: <
+  }
+};
+priority_queue<int,vector<int>,compare>pq;
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>_pq</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,45 @@
+<snippet>
+	<content><![CDATA[
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define pii pair<int,int>
+#define fastio() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0)
+#define test() int t;cin>>t;while(t--)
+#define loop(i,start,end) for(int i=start;i<end;i++)
+#define pb push_back
+#define nl cout<<endl
+#define MOD 1000000007
+#define N 100001
+#define all(v) v.begin(),v.end()
+#define oa(a,n) for(int i=0;i<n;i++)cout<<a[i]<<" ";nl
+#define ov(a) for(int i=0;i<a.size();i++)cout<<a[i]<<" ";nl
+#define debug(x) cerr<<#x<<" : "<<x<<endl;
+mt19937 rd(time(0)); // i = rd%n
+void solve()
+{
+	int n;
+	cin>>n;
+	vector<int>v(n);
+	loop(i,0,n)cin>>v[i];
+}
+signed main() 
+{
+	fastio();
+	#ifndef ONLINE_JUDGE
+		freopen("in.txt","r",stdin);
+		freopen("out.txt","w",stdout);
+	#endif
+	test()
+	solve();
+
+
+	return 0;
+}
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>tt</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

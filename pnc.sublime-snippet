@@ -1,0 +1,49 @@
+<snippet>
+	<content><![CDATA[
+class PnC
+{
+public:
+    vector<int>fact,invfact;
+    PnC( int n )
+    {
+        fact.resize(n);
+        invfact.resize(n);
+        fact[0] = invfact[0] = 1;
+        for(int i=1;i<n;i++)
+        {
+            fact[i] = (i * fact[i-1] )%MOD;
+            invfact[i] = modinv( fact[i] );
+        }
+    }
+    int modinv( int x)
+    {
+        return expo(x,MOD-2);
+    }
+    int expo(int base,int x)
+    {
+        int res = 1;    
+        base = base % MOD; 
+        while (x > 0)
+        {
+            if (x & 1)
+                res = (res*base) % MOD;
+            x= x>>1;
+            base = (base*base) % MOD;  
+        }
+        return res;
+    }
+    int choose( int n, int k )
+    {
+        if( k < 0 || k > n ) return 0;
+        int ans = fact[n];
+        ans = (ans * invfact[n-k] )%MOD;
+        ans = (ans * invfact[k])%MOD;
+        return ans;
+    }
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>_pnc</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet wiint trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
