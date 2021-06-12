@@ -1,5 +1,3 @@
-<snippet>
-	<content><![CDATA[
 #include <bits/stdc++.h>
 using namespace std;
 #define fastio() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0)
@@ -15,7 +13,7 @@ using namespace std;
 #define oa(a,n) for(int i=0;i<n;i++)cout<<a[i]<<" ";nl
 #define ov(a) for(int i=0;i<a.size();i++)cout<<a[i]<<" ";nl
 
-const int MAXN = 1e5+5;
+const int N = 1e5+5;
 const int MOD = 1e9+7;
 const int LOGN = 21;
 const int INF = 1e17;
@@ -29,10 +27,29 @@ int mod( int n, int m=MOD ){ n%=m;if(n<0)n+=m;return n; }
 
 void solve()
 {
-	int n;
+	int n,q;
 	cin>>n;
 	vector<int>v(n);
 	loop(i,0,n)cin>>v[i];
+	cin>>q;
+	while(q--)
+	{
+		int l,r;
+		cin>>l>>r;
+		l--;r--;
+		int ans = -MOD,cur = 0;
+		for(int i = l;i<=r;i++)
+		{
+			cur = 0;
+			for(int j = i;j<=r;j++)
+			{
+				if(cur>0)cur+=v[j];
+				else cur = v[j];
+				max_self(ans,cur);
+			}
+		}
+		cout<<ans<<endl;
+	}
 }
 signed main() 
 {
@@ -49,10 +66,3 @@ signed main()
 
 	return 0;
 }
-
-]]></content>
-	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
-	<tabTrigger>tt</tabTrigger>
-	<!-- Optional: Set a scope to limit where the snippet will trigger -->
-	<!-- <scope>source.python</scope> -->
-</snippet>

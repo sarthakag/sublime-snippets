@@ -1,0 +1,37 @@
+<snippet>
+	<content><![CDATA[
+vector<int>hsh;
+vector<int>dv;
+
+void precomp(string s)
+{
+    int n = s.length();
+    int mul = 131;
+    hsh.pb(0);
+    int sm = 0;
+    for(int i = 1;i<n;i++)
+    {
+        sm+=mod((s[i]-'a')*mul);
+        hsh.pb(sm);
+        mul = mod(mul*131);
+    }
+    int inv = expo(131,MOD-2);
+    dv.pb(1);
+    dv.pb(inv);
+    for(int i = 2;i<n;i++)
+        dv.pb(mod(inv*dv[i-1]));
+
+}
+int get(int l,int r)
+{
+    int ret = hsh[r];
+    sub(ret,hsh[l-1]);
+    ret = mod(ret*dv[l-1]);
+    return ret;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>_hashString</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

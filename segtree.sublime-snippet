@@ -1,0 +1,126 @@
+<snippet>
+	<content><![CDATA[
+class Node
+{
+public:
+    int val;
+    Node()
+    {
+        val = 0;
+    }
+    Node(int a):val(a){}
+    static Node merge(Node left, Node right)
+    {
+        Node result;
+        result.val = left.val + right.val;
+        return result;
+    }
+};
+
+template<class T>
+class ST{
+public:
+	int n;
+	vector<int>arr;
+	vector<T>tree;
+	ST(){}
+	ST(int sz)
+	{
+		n = sz;
+		arr.resize(n,0);
+		tree.resize(4*n,0);
+		build(0,n-1);
+	}
+	ST(vector<int>ar)
+	{
+		n = ar.size();
+		arr = ar;
+		tree.resize(4*n,0);
+		build(0,n-1);
+	}
+	
+	void build(int l,int r,int c = 1)
+	{
+		if(l==r)
+		{
+			tree[c] = arr[l];
+			return;
+		}
+		int mid = (l+r)/2,c1 = c*2,c2=c*2+1;
+		build(l,mid,c1);
+		build(mid+1,r,c2);
+		tree[c] = T::merge(tree[c1],tree[c2]);
+	}
+	Node query(int x,int y, int l, int r, int c)
+	{
+		if(l==x && y==r)
+		{
+			return tree[c];
+		}
+		int mid = (l+r)/2;
+		if(mid>=y)
+			return query(x,y,l,mid,c*2);
+		else if(mid<x)
+			return query(x,y,mid+1,r,c*2+1);
+		
+		return T::merge(query(x,mid,l,mid,2*c),query(mid+1,y,mid+1,r,2*c+1));
+	}
+	Node query(int l,int r)
+	{
+		return query(l,r,0,n-1,1);
+	}
+	void update(int idx,int val,int l, int r ,int c)
+	{
+		if(l==r)
+		{
+			tree[c].val = val;
+			return;
+		}
+		int mid = (l+r)/2;
+		if(mid >= idx)
+			update(idx, val, l, mid, 2 * c);
+		else if(mid<idx)
+			update(idx, val, mid+1, r, 2*c+1);
+		tree[c] = T::merge(tree[2*c],tree[2*c+1]);
+	}
+	void update(int idx, int val)
+	{
+		update(idx,val,0,n-1,1);
+	}
+};
+
+void solve()
+{
+	int n,q;
+	cin>>n;
+	cin>>q;
+	vector<int>v(n);
+	for(int i = 0;i<n;i++)cin>>v[i];
+	ST<Node>st(v);
+	while(q--)
+	{
+		int ty;
+		cin>>ty;
+		if(ty==1)
+		{
+			int idx,val;
+			cin>>idx>>val;
+			idx--;
+			st.update(idx,val);
+		}
+		else 
+		{
+			int l,r;
+			cin>>l>>r;
+			l--;
+			r--;
+			cout<<st.query(l,r).val<<endl;
+		}
+	}
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>_segtree</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

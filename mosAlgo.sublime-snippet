@@ -1,0 +1,55 @@
+<snippet>
+	<content><![CDATA[
+
+int sq = sqrt(n);
+sort(all(a),[&](array<int,3>e,array<int,3>f){
+	int le = e[0]/sq;
+	int lf = f[0]/sq;
+	if(lf!=le)return le<lf;
+	else return e[1]<f[1]; 
+});
+
+int l,r,ans=0;
+l = 0;
+r = 1;//[LR)
+freq[v[0]]++;
+ans = 1;
+for(int i = 0;i<q;i++)
+{
+	int L = a[i][0];
+	int R = a[i][1];
+	// cout<<L<<" "<<R<<endl;
+	while(r<=R)
+	{
+		int val = v[r++];
+		if(freq[val]==0)ans++;
+		freq[val]++;
+	}
+	while(r>R+1)
+	{
+		int val = v[--r];
+		if(freq[val]==1)ans--;
+		freq[val]--;
+	}
+	while(l<L)
+	{
+		int val = v[l++];
+		if(freq[val]==1)ans--;
+		freq[val]--;
+	}
+	while(l>L)
+	{
+		int val = v[--l];
+		if(freq[val]==0)ans++;
+		freq[val]++;
+	}
+	an[a[i][2]] = ans;
+}
+for(int i = 0;i<q;i++)cout<<an[i]<<endl;
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>_mos_algorithm</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,142 @@
+<snippet>
+	<content><![CDATA[
+class Node
+{
+public:
+	int val;
+	int l,r;
+	Node()
+	{
+		val = 0;
+	}
+	Node(int a):val(a){}
+	static Node merge(Node left, Node right)
+	{
+		Node result;
+		result.val = left.val + right.val;
+
+		result.l = left.l;
+		result.r = right.r;
+		return result;
+	}
+};
+class lazyNode
+{
+public:
+	int add;
+	int l,r;
+	lazyNode(){}
+	lazyNode(int a):add(a){}
+	void clear()
+	{
+		add = 0;
+	}
+	//lazy+lazy
+	void combine(lazyNode other)
+	{
+		add += other.add;
+	}
+	//apply lazy on tree
+	void apply(Node& node)
+	{
+		int len = node.r - node.l + 1;
+		node.val += add*len;
+	}
+
+};
+template<class T,class U> 
+class ST
+{
+public:
+	int n;
+	vector<T>tree;
+	vector<U>lazy;
+	vector<int>arr;
+	ST()
+	{
+
+	}
+	ST(int sz)
+	{
+		n = sz;
+		arr.resize(n,0);
+		tree.resize(4*n);
+		lazy.resize(4*n);
+		build(1,0,n-1);
+	}
+	ST(vector<int>&ar)
+	{
+		arr = ar;
+		n = arr.size();
+		arr.resize(n);
+		tree.resize(4*n);
+		lazy.resize(4*n);
+		build(1,0,n-1);
+	}
+	void build(int c, int l, int r)
+	{
+		if(l==r)
+		{
+			tree[c] = arr[l];
+			tree[c].l = tree[c].r = l;
+			return;
+		}
+		int mid = (l+r)/2;
+		build(2*c,l,mid);
+		build(2*c+1,mid+1,r);
+		pull(c);
+	}
+	T query(int ql, int qr, int c, int l, int r)
+	{
+		if(ql>r || qr< l)
+			return T();
+		if(ql<=l && r<=qr)
+			return tree[c];
+		push(c);
+		int mid = (r+l)/2;
+		return T::merge(query(ql,qr,2*c,l,mid), query(ql,qr,2*c+1,mid+1,r));
+	}
+	T query(int l,int r)
+	{
+		return query(l,r,1,0,n-1);
+	}
+	void push(int c)
+	{
+		lazy[2*c].combine(lazy[c]);
+		lazy[2*c+1].combine(lazy[c]);
+
+		lazy[c].apply(tree[2*c]);
+		lazy[c].apply(tree[2*c+1]);
+		lazy[c].clear();
+	}
+	void update(int ql,int qr, U upd, int c, int l,int r)
+	{
+		if(ql>r || qr<l )
+			return;
+		if(ql<=l && r<=qr)
+		{
+			upd.apply(tree[c]);
+			lazy[c].combine(upd);
+			return;
+		}
+		push(c);
+		int mid = (l+r)/2;
+		update(ql,qr,upd,2*c,l,mid);
+		update(ql,qr,upd,2*c+1,mid+1,r);
+		pull(c);
+	}
+	void update(int l,int r,U upd)
+	{
+		update(l,r,upd,1,0,n-1);
+	}
+	void pull(int c)
+	{
+		tree[c] = T::merge(tree[2*c],tree[2*c+1]);
+	}
+};
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>_lazyST</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

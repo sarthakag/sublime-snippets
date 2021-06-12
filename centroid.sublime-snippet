@@ -1,0 +1,63 @@
+<snippet>
+	<content><![CDATA[
+vector<int>g[N];
+vector<int>sz(N),dead(N),par(N),level(N);
+
+int dfs(int u,int v=-1)
+{
+    sz[u] = 1;
+    for(auto i:g[u])
+    {
+        if(i!=v && !dead[i])
+            sz[u]+=dfs(i,u);
+    }
+    return sz[u];
+}
+int findCentroid(int u,int sn,int p=-1)
+{
+    for(auto i:g[u])
+    {
+        if(i!=p && !dead[i] && sz[i]>sn/2)
+            return findCentroid(i,sn,u);
+    }
+    return u;
+}
+void precompute(int c,int lvl,int p=-1)
+{
+
+    for(auto i:g[c])
+    {
+        if(i!=p && !dead[i])
+        {
+            precompute(i,lvl,c);
+        }
+    }
+
+}
+int decompose(int u,int v=-1)
+{
+    int centroid = findCentroid(u,dfs(u));
+    dead[centroid] = 1;
+    par[centroid] = v;
+    if(v!=-1)
+    {
+        level[centroid] = level[v]+1;
+        // cd[centroid].pb(v);
+        // cd[v].pb(centroid);
+    }
+
+    precompute(centroid,level[centroid]);
+
+    for(auto i:g[centroid])
+    {
+        if(!dead[i])
+            decompose(i,centroid);
+    }
+    return centroid;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>_centroid</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

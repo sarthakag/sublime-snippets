@@ -1,0 +1,42 @@
+<snippet>
+	<content><![CDATA[
+
+int base = 1;
+while(base<n)base*=2;
+st.resize(2*base,0);
+for(int i = 0;i<n;i++)st[base+i] = v[i];
+for(int i = n-1;i>0;i--)
+{
+	// st[i] = merge(st[2*i],st[2*i+1]);
+}
+/*
+			a--;
+			b--;
+			a+=base;
+			b+=base;
+			while(a<=b)
+			{
+				if(a&1)st[a++] += u; 
+				if(!(b&1))st[b--] += u;
+				a/=2;
+				b/=2;
+			}
+
+			u--;
+			u+=base;
+			int ans = 0;
+			while(u>0)
+			{
+				ans+=st[u];
+				u/=2;
+			}
+			cout<<ans<<endl;
+
+*/
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>_iterative_seg_tree</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

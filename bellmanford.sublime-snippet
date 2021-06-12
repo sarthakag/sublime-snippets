@@ -1,0 +1,42 @@
+<snippet>
+	<content><![CDATA[
+vector<array<int,3> >adj;
+int dist[MAXN];
+int n,m;
+void bellman_ford()
+{
+	for(int i = 1; i < n; ++i)
+	{
+		for(auto e: adj)
+		{
+			int u = e[0];
+			int v = e[1];
+			int d = e[2];
+			if(dist[u] == INF) continue;
+			dist[v] = min(dist[v], d+dist[u]);
+			dist[v] = max(dist[v], NINF);
+		}
+	} // n relaxations
+ 
+	for(int i = 1; i < n; ++i)
+	{
+		for(auto e: adj)
+		{
+			int u = e[0];
+			int v = e[1];
+			int d = e[2];
+			if(dist[u] == INF) continue;
+			dist[v] = max(dist[v], NINF);
+			if(dist[u]+d < dist[v])
+			{
+				dist[v] = NINF;
+			}
+		}
+	}
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>_bellmanFord</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
