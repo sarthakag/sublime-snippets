@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
 		srand(time(0));
 	fastio();
 	#ifdef sarthakag
-		freopen("in.txt","r",stdin);
+		// freopen("in.txt","r",stdin);
 		freopen("in.txt","w",stdout);
 	#endif
 	int t=1;

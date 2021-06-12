@@ -4,3 +4,6 @@
 *.out
 *.exe
 .DS_Store
+Default (OSX).sublime-keymap
+Package Control.sublime-settings
+Package Control.user-ca-bundle

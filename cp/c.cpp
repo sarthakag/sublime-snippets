@@ -24,108 +24,13 @@ template<class T1, class T2> void add( T1 &x, T2 y, int m = MOD ){x += y;if( x >
 template<class T1, class T2> void sub( T1 &x, T2 y, int m = MOD ){x -= y;if( x < 0 )x += m;}
 int mod( int n, int m=MOD ){ n%=m;if(n<0)n+=m;return n; }
 
-vector<int>g[MAXN];
-int n,m;
-vector<int>rt,sz;
-void initialise()
-{
-	rt.resize(n,0);
-	sz.resize(n,0);
-  for(int i=0;i<n;i++)
-  {	
-    rt[i]=i;
-    sz[i]=1;
-  }
-}
 
-int root(int i)
-{
-  while(i!=rt[i])
-  {
-    rt[i]=rt[rt[i]];
-    i=rt[i];
-  }
-  return i;
-}
-
-void union1(int a,int b)
-{
-  if(root(a)==root(b))
-    return;
-  int rta=root(a);
-  int rtb=root(b);
-  int sza=sz[rta];
-  int szb=sz[rtb];
-  if(sza>=szb)
-  {
-    rt[rtb]=rt[rta];
-    sz[rta]+=sz[rtb];
-    sz[rtb]=0;
-  }
-  else
-  {
-    rt[rta]=rt[rtb];
-    sz[rtb]+=sz[rta];
-    sz[rta]=0;
-  }
-}
 void solve()
 {
+	int n;
 	cin>>n;
-	m =n-1;
-	cin>>m;
-	initialise();
-	for(int i = 0;i<m;i++)
-	{
-		int u,v;
-		cin>>u>>v;
-		u--;v--;
-		g[u].pb(v);
-		g[v].pb(u);
-		union1(u,v);
-	}
-	set<int>se;
-	for(int i = 0;i<n;i++)se.insert(root(i));
-	if(se.size()==2)
-	{
-		cout<<"WIN"<<endl;
-		return;
-	}
-	if(se.size()==1)
-	{
-		cout<<"LOSE"<<endl;
-		return;
-	}
-	// return;
-	int sm2=0,sm = 0,ed=-m;
-	for(auto i:se)
-	{
-		sm+=sz[i];
-		ed+=sz[i]*(sz[i]-1)/2;
-		sm2+=sz[i]*sz[i];
-	}
-	int tot = (sm*sm - sm2)/2 + ed;
-	int par = tot&1;
-	int fl =0;
-	for(auto i:se)
-	{
-		int lol = sz[i];
-		int left = n-sz[i];
-		int num = lol*left-1;
-		fl ^= ((num&1)^par);
-		// if((num&1)^par)
-		// {
-		// 	cout<<"WIN"<<endl;
-		// 	return;
-		// }
-	}
-	if(!fl)
-		cout<<"LOSE"<<endl;
-	else
-		cout<<"WIN"<<endl;
-
-
-
+	vector<int>v(n);
+	loop(i,0,n)cin>>v[i];
 }
 signed main() 
 {
@@ -135,7 +40,7 @@ signed main()
 		freopen("out.txt","w",stdout);
 	#endif
 	int t=1;
-	cin>>t;
+	// cin>>t;
 	while(t--)
 		solve();
 
